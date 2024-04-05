@@ -1,0 +1,93 @@
+import capos.*
+import artefactos.*
+
+describe "AgarrarArtefactos hasta capacidad maxima de rolando" {
+
+	test "	1. rolando encuentra la espada del destino (la agarra)
+ 			2. rolando encuentra el libro de hechizos (la agarra)
+ 			3. rolando encuentra el collar divino (no lo agarra, ya que tiene la espada y el libro encima y su capacidad es de 2)" {
+		rolando.agarrarSiPuede(espadaDelDestino)
+		rolando.agarrarSiPuede(libroDeHechizos)
+		assert.equals(2, rolando.artefactosEnBolsa())
+		rolando.agarrarSiPuede(collarDivino)
+		assert.equals(2, rolando.artefactosEnBolsa())
+	}
+
+}
+
+describe "Dejar artefactos en el castillo" {
+
+	test "	1. rolando encuentra la espada del destino (la agarra)
+ 			2. rolando encuentra el libro de hechizos (la agarra)
+ 			3. rolando llega al castillo de piedra (deja en el castillo la espada y el libro de hechizos)
+ 			4. rolando encuentra el collar divino (ahora si lo puede agarrar, ya que liberó espacio)
+ 			3. rolando llega al castillo de piedra de nuevo(deja el collar, con lo cual ahora el castillo tiene el collar, la espada y el libro)" {
+		rolando.agarrarSiPuede(espadaDelDestino)
+		rolando.agarrarSiPuede(libroDeHechizos)
+		assert.that(rolando.tieneEncima(espadaDelDestino))
+		assert.that(rolando.tieneEncima(libroDeHechizos))
+		assert.equals(2, rolando.artefactosEnBolsa())
+		rolando.dejarArtefactosEnElCastillo()
+		assert.equals(0, rolando.artefactosEnBolsa())
+		rolando.agarrarSiPuede(collarDivino)
+		assert.that(rolando.tieneEncima(collarDivino))
+		assert.equals(1, rolando.artefactosEnBolsa())
+		rolando.dejarArtefactosEnElCastillo()
+		assert.equals(0, rolando.artefactosEnBolsa())
+		assert.notThat(rolando.tieneEncima(armaduraDeAceroValyrio))
+	}
+
+}
+
+describe "Artefactos que posee rolando" {
+
+
+	test "El castillo tiene el collar, la espada. Rolando tiene la armadura. 
+	Entonces rolando posee el collar, la espada y la armadura.
+	El libro no lo posee." {
+		rolando.agarrarSiPuede(espadaDelDestino)
+		rolando.agarrarSiPuede(collarDivino)
+		rolando.dejarArtefactosEnElCastillo()
+		rolando.agarrarSiPuede(armaduraDeAceroValyrio)
+		assert.that(rolando.posee(espadaDelDestino))
+		assert.that(rolando.posee(collarDivino))
+		assert.that(rolando.posee(armaduraDeAceroValyrio))
+		assert.notThat(rolando.posee(libroDeHechizos))
+	}
+
+}
+
+describe "historial de artefactos" {
+	test "
+			 1. rolando encuentra la espada del destino (la agarra)
+ 2. rolando encuentra el libro de hechizos (la agarra)
+ 3. rolando encuentra el collar divino (no lo agarra, ya que tiene la espada y el libro encima y su capacidad es de 2)
+ 4. rolando llega al castillo de piedra (deja en el castillo la espada y el libro de hechizos)
+ 5. rolando encuentra la armadura de acero valyrio (la agarra)
+ 6. rolando encuentra el collar divino (ahora si lo puede agarrar, ya que liberó espacio)" {
+ 	rolando.agarrarSiPuede(espadaDelDestino)
+	rolando.agarrarSiPuede(libroDeHechizos)
+	rolando.agarrarSiPuede(collarDivino)
+	rolando.dejarArtefactosEnElCastillo()
+	rolando.agarrarSiPuede(armaduraDeAceroValyrio)
+	rolando.agarrarSiPuede(collarDivino)
+	
+	/*
+	 * Si consultamos la historia de encuentro con los artefactos debería ser:
+ 		1. espada del destino 
+ 		2. libro de hechicos
+		3. collar divino
+ 		4. armadura de acero valyrio
+ 		5. collar divino (de nuevo!)
+	 */
+	
+	assert.equals(espadaDelDestino, rolando.historialDeArtefactos().get(0))
+	assert.equals(libroDeHechizos, rolando.historialDeArtefactos().get(1))
+	assert.equals(collarDivino, rolando.historialDeArtefactos().get(2))
+	assert.equals(armaduraDeAceroValyrio, rolando.historialDeArtefactos().get(3))
+	assert.equals(collarDivino, rolando.historialDeArtefactos().get(4))
+	
+ }
+ 	
+}
+
