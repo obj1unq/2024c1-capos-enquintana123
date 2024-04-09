@@ -1,0 +1,58 @@
+import capos.*
+import artefactos.*
+import castilloDePiedra.*
+
+test "Poder de pelea" {
+	rolando.capacidadMaxima(3)
+	rolando.poderBase(5)
+	rolando.bolsa(#{ espadaDelDestino, armaduraDeAceroValyrio, collarDivino })
+	
+	rolando.batalla()
+	assert.equals(6, rolando.poderBase())
+	assert.equals(3, espadaDelDestino.poder(rolando))
+	assert.equals(6, armaduraDeAceroValyrio.poder(rolando))
+	assert.equals(3, collarDivino.poder(rolando))
+	assert.equals(18, rolando.poderDePelea())
+	
+	rolando.batalla()
+	assert.equals(7, rolando.poderBase())
+	assert.equals(3.5, espadaDelDestino.poder(rolando))
+	assert.equals(6, armaduraDeAceroValyrio.poder(rolando))
+	assert.equals(5, collarDivino.poder(rolando))
+	assert.equals(21.5, rolando.poderDePelea())
+	
+	rolando.batalla()
+	assert.equals(8, rolando.poderBase())
+	assert.equals(4, espadaDelDestino.poder(rolando))
+	assert.equals(6, armaduraDeAceroValyrio.poder(rolando))
+	assert.equals(6, collarDivino.poder(rolando))
+	assert.equals(24, rolando.poderDePelea())
+}
+
+test "libro de hechizos" {
+	/*
+	 * 
+	 * #### Ejemplo
+
+	 * Suponiendo que Rolando (con 5 de poder de pelea) solo tiene encima el libro de hechizos, mientras que en su castillo tiene 
+	 * la espada, la armadura y el collar. (todo sin haber sido usado antes).
+	 * El libro de hechizos contiene a estos tres hechizo en este orden: bendición, invisibilidad e invocación.
+
+	 * Antes de la primera batalla, el libro de hechizos aporta 4 de la bendición.
+	 * Luego de la primera batalla el libro de hechizos aporta 6 por la invisibilidad.
+	 * Luego de la segunda batalla, el libro aporta 7, ya que la invocación otorga los 7 puntos de la espada.
+	 * Luego de la tercera batalla, ya no quedan más hechizos, por lo que el aporte del libro es 0
+	 *  
+	 */
+	rolando.poderBase(5)
+	rolando.bolsa(#{ libroDeHechizos })
+	castilloDePiedra.armario(#{ espadaDelDestino, armaduraDeAceroValyrio, collarDivino })
+	libroDeHechizos.hechizos([ bendicion, invisibilidad, invocacion ])
+	assert.equals(4, libroDeHechizos.poder(rolando))
+	rolando.batalla()
+	assert.equals(6, libroDeHechizos.poder(rolando))
+	rolando.batalla()
+	assert.equals(7, libroDeHechizos.poder(rolando))
+	rolando.batalla()
+	assert.equals(0, libroDeHechizos.poder(rolando))
+}
