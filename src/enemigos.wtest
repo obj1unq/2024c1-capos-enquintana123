@@ -1,0 +1,39 @@
+import capos.*
+import artefactos.*
+import enemigos.*
+
+describe "enemigos" {
+
+	/*
+	 * Suponiendo que Rolando tiene 5 de base y capacidad de 3 artefactos. Entre sus artefactos 
+	 * se encuentran la *espada* (que le aporta 5), la *armadura* (aporta 6) y el *collar* (aporta 3).
+	 * Su poder de batalla es 19, por lo tanto puede vencer a archibaldo y a astra. 
+	 * Las moradas conquistables son el palacio de mármol y la torre de marfil.
+	 */
+	test "hogares conquistables con poderBase 5, teniendo espada, armadura y collar (poderDePelea = 19)" {
+		rolando.capacidadMaxima(3)
+		rolando.poderBase(5)
+		rolando.bolsa(#{ espadaDelDestino, armaduraDeAceroValyrio, collarDivino })
+		assert.equals(19, rolando.poderDePelea())
+		assert.equals(#{ archibaldo, astra }, erethia.vencibles(rolando))
+		assert.equals(#{ palacioDeMarmol, torreDeMarfil }, erethia.hogaresConquistables(rolando))
+	}
+	
+	test "no es poderoso" {
+		rolando.capacidadMaxima(3)
+		rolando.poderBase(5)
+		rolando.bolsa(#{ espadaDelDestino, armaduraDeAceroValyrio, collarDivino })
+		assert.equals(19, rolando.poderDePelea())
+		assert.notThat(erethia.esPoderoso(rolando))
+	}
+	
+	test "es poderoso si poder de base es 10" {
+		rolando.capacidadMaxima(3)
+		rolando.poderBase(10)
+		rolando.bolsa(#{ espadaDelDestino, armaduraDeAceroValyrio, collarDivino })
+		assert.equals(29, rolando.poderDePelea())
+		assert.that(erethia.esPoderoso(rolando))
+	}
+
+}
+

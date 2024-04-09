@@ -11,55 +11,61 @@
  */
 object archibaldo {
 
-	var property hogar = palacioDeMarmol
+	const property hogar = palacioDeMarmol
 
 	method poderDePelea() {
 		return 16
 	}
 
 }
+
 object caterina {
-var property hogar = fortalezaDeAcero
+
+	const property hogar = fortalezaDeAcero
 
 	method poderDePelea() {
 		return 28
 	}
-	
+
 }
+
 object astra {
-	var property hogar = torreDeMarfil
+
+	const property hogar = torreDeMarfil
 
 	method poderDePelea() {
 		return 14
 	}
-	
+
 }
+
 object palacioDeMarmol {
-	
+
 }
 
 object fortalezaDeAcero {
-	
-	
+
 }
 
 object torreDeMarfil {
-	
+
 }
+
 object erethia {
 
-	var property enemigos = #{}
-	
+	var property enemigos = #{astra, archibaldo, caterina}
+
 	method vencibles(capo) {
-		return enemigos.filter({enemigo => capo.vencible(enemigo)})
+		return enemigos.filter({ enemigo => capo.vencible(enemigo) })
 	}
-	
+
 	method hogaresConquistables(capo) {
-		return self.vencibles(capo).map({enemigo => enemigo.hogar()}).asSet()
-	}	
-	
-	method esPoderoso(capo) {
-		return enemigos.all({enemigo => capo.vencible(enemigo)})
+		return self.vencibles(capo).map({ enemigo => enemigo.hogar() }).asSet()
 	}
+
+	method esPoderoso(capo) {
+		return enemigos.all({ enemigo => capo.vencible(enemigo) })
+	}
+
 }
 

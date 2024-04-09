@@ -1,5 +1,6 @@
 import capos.*
 import artefactos.*
+import enemigos.*
 
 describe "AgarrarArtefactos hasta capacidad maxima de rolando" {
 
@@ -41,7 +42,6 @@ describe "Dejar artefactos en el castillo" {
 
 describe "Artefactos que posee rolando" {
 
-
 	test "El castillo tiene el collar, la espada. Rolando tiene la armadura. 
 	Entonces rolando posee el collar, la espada y la armadura.
 	El libro no lo posee." {
@@ -58,6 +58,7 @@ describe "Artefactos que posee rolando" {
 }
 
 describe "historial de artefactos" {
+
 	test "
 			 1. rolando encuentra la espada del destino (la agarra)
  2. rolando encuentra el libro de hechizos (la agarra)
@@ -65,29 +66,46 @@ describe "historial de artefactos" {
  4. rolando llega al castillo de piedra (deja en el castillo la espada y el libro de hechizos)
  5. rolando encuentra la armadura de acero valyrio (la agarra)
  6. rolando encuentra el collar divino (ahora si lo puede agarrar, ya que liberó espacio)" {
- 	rolando.encontrar(espadaDelDestino)
-	rolando.encontrar(libroDeHechizos)
-	rolando.encontrar(collarDivino)
-	rolando.dejarArtefactosEnElCastillo()
-	rolando.encontrar(armaduraDeAceroValyrio)
-	rolando.encontrar(collarDivino)
-	
-	/*
-	 * Si consultamos la historia de encuentro con los artefactos debería ser:
- 		1. espada del destino 
- 		2. libro de hechicos
-		3. collar divino
- 		4. armadura de acero valyrio
- 		5. collar divino (de nuevo!)
-	 */
-	
-	assert.equals(espadaDelDestino, rolando.historialDeArtefactos().get(0))
-	assert.equals(libroDeHechizos, rolando.historialDeArtefactos().get(1))
-	assert.equals(collarDivino, rolando.historialDeArtefactos().get(2))
-	assert.equals(armaduraDeAceroValyrio, rolando.historialDeArtefactos().get(3))
-	assert.equals(collarDivino, rolando.historialDeArtefactos().get(4))
-	
- }
- 	
+		rolando.encontrar(espadaDelDestino)
+		rolando.encontrar(libroDeHechizos)
+		rolando.encontrar(collarDivino)
+		rolando.dejarArtefactosEnElCastillo()
+		rolando.encontrar(armaduraDeAceroValyrio)
+		rolando.encontrar(collarDivino)
+		/*
+		 * Si consultamos la historia de encuentro con los artefactos debería ser:
+		 *  		1. espada del destino 
+		 *  		2. libro de hechicos
+		 * 	3. collar divino
+		 *  		4. armadura de acero valyrio
+		 *  		5. collar divino (de nuevo!)
+		 */
+		assert.equals(espadaDelDestino, rolando.historialDeArtefactos().get(0))
+		assert.equals(libroDeHechizos, rolando.historialDeArtefactos().get(1))
+		assert.equals(collarDivino, rolando.historialDeArtefactos().get(2))
+		assert.equals(armaduraDeAceroValyrio, rolando.historialDeArtefactos().get(3))
+		assert.equals(collarDivino, rolando.historialDeArtefactos().get(4))
+	}
+
+}
+
+describe "artefacto letal" {
+
+	test "NO tiene algun artefacto fatal" {
+		rolando.capacidadMaxima(3)
+		rolando.poderBase(5)
+		rolando.bolsa(#{ espadaDelDestino, armaduraDeAceroValyrio, collarDivino, libroDeHechizos })
+		assert.notThat(rolando.tieneArmaLetal(astra))
+	}
+
+	test "tiene algun artefacto fatal, si el poder base es 19, y es la espadaDelDestino" {
+		rolando.capacidadMaxima(3)
+		rolando.poderBase(19)
+		rolando.bolsa(#{ espadaDelDestino, armaduraDeAceroValyrio, collarDivino })
+		assert.that(rolando.tieneArmaLetal(astra))
+		// assert.equals(19, rolando.poderDePelea())
+		assert.equals(espadaDelDestino, rolando.armaLetal(astra))
+	}
+
 }
 

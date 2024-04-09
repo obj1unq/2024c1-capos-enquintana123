@@ -64,27 +64,27 @@ object rolando {
 	}
 
 	method vencible(enemigo) {
-		return enemigo.poder() < self.poderDePelea()
+		return enemigo.poderDePelea() < self.poderDePelea()
 	}
 
 	method tieneArmaLetal(enemigo) {
-		return bolsa.any({ artefacto => self.esFatal(artefacto, enemigo) })
+		return bolsa.any({ artefacto => self.esLetal(artefacto, enemigo) })
 	}
 
-	method esFatal(artefacto, enemigo) {
-		return artefacto.poder(self) > enemigo.poderPelea()
+	method esLetal(artefacto, enemigo) {
+		return artefacto.poder(self) > enemigo.poderDePelea()
 	}
 
 	method cantidadDeArmasFatales(enemigo) {
-		return bolsa.count({ artefacto => self.esFatal(artefacto, enemigo) })
+		return bolsa.count({ artefacto => self.esLetal(artefacto, enemigo) })
 	}
 
 	method armaLetal(enemigo) {
-		return bolsa.find({ artefacto => self.esFatal(artefacto, enemigo) })
+		return bolsa.find({ artefacto => self.esLetal(artefacto, enemigo) })
 	}
 
-	method armasFatales(enemigo) {
-		return bolsa.filter({ artefacto => self.esFatal(artefacto, enemigo) })
+	method armasLetales(enemigo) {
+		return bolsa.filter({ artefacto => self.esLetal(artefacto, enemigo) })
 	}
 
 }
